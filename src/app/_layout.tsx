@@ -1,8 +1,8 @@
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
-
 // Evitar que se oculte automaticamente
 SplashScreen.preventAutoHideAsync();
 
@@ -12,7 +12,13 @@ export default function RootLayout() {
   useEffect(() => {
     async function prepare() {
       try {
-        setTimeout(() => {}, 2000);
+        useFonts({
+          NunitoBold: require("../../assets/font/Nunito-Bold.ttf"),
+          NunitoItalic: require("../../assets/font/Nunito-Italic-VariableFont_wght.ttf"),
+          NunitoLight: require("../../assets/font/Nunito-Light.ttf"),
+          NunitoRegular: require("../../assets/font/Nunito-Regular.ttf"),
+          NunitoSemiBold: require("../../assets/font/Nunito-SemiBold.ttf"),
+        });
       } catch (error) {
         console.warn(error);
       } finally {

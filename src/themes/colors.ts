@@ -1,11 +1,11 @@
-export const color = {
-  primary: "#52171b",
+export const colors = {
+  primary: "#1A2D42",
 
-  secondary: "#330a0e",
+  secondary: "#2E4156",
 
-  hover: "#B88A2C",
+  hover: "#AAB7B7",
 
-  background: "#ceb1a1",
+  background: "#c0c8ca",
 
-  labelDetail: "#efe2d9",
+  labelDetail: "#D4D8DD",
 };

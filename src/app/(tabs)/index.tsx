@@ -1,10 +1,13 @@
+import CustomHeader from "@/src/components/ux/CustomHeader";
+import { Home } from "@/src/pages/Home";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function Index() {
   return (
     <View>
-      <Text>Home</Text>
+      <CustomHeader title="Hora de entrenar" />
+      <Home />
     </View>
   );
 }

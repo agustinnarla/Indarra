@@ -1,15 +1,25 @@
 import Login from "@/src/pages/Login";
-import { color } from "@/src/themes/colors";
+import { colors } from "@/src/themes/colors";
 import React from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginTab() {
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: color.background }}
-      edges={["top", "left", "right"]}
-    >
-      <Login />
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: colors.hover }}>
+      <SafeAreaView
+        edges={["top"]}
+        style={{ backgroundColor: colors.background }}
+      />
+
+      <View style={{ flex: 1 }}>
+        <Login />
+      </View>
+
+      <SafeAreaView
+        edges={["bottom"]}
+        style={{ backgroundColor: colors.hover }}
+      />
+    </View>
   );
 }
