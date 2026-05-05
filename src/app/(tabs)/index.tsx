@@ -5,8 +5,8 @@ import { View } from "react-native";
 
 export default function Index() {
   return (
-    <View>
-      <CustomHeader title="Hora de entrenar" />
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <CustomHeader />
       <Home />
     </View>
   );

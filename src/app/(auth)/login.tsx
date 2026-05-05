@@ -6,20 +6,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginTab() {
   return (
-    <View style={{ flex: 1, backgroundColor: colors.hover }}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         edges={["top"]}
-        style={{ backgroundColor: colors.background }}
+        style={{ backgroundColor: colors.primary }}
       />
 
       <View style={{ flex: 1 }}>
         <Login />
       </View>
 
-      <SafeAreaView
-        edges={["bottom"]}
-        style={{ backgroundColor: colors.hover }}
-      />
+      <SafeAreaView edges={["bottom"]} style={{ backgroundColor: "white" }} />
     </View>
   );
 }

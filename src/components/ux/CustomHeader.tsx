@@ -1,4 +1,5 @@
 import { colors } from "@/src/themes/colors";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,38 +11,68 @@ interface Props {
 const CustomHeader = ({ title, subtitle }: Props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Text style={styles.title}>Bienvenido</Text>
-      <View style={styles.image}>
-        <Ionicons name="pulse" size={24} color={colors.primary} />
+      <View style={styles.container}>
+        <View style={styles.left}>
+          <View style={styles.ubi}>
+            <EvilIcons name="location" size={20} color="white" />
+            <Text style={styles.titleUbi}>Bucor Nv. Cordoba</Text>
+          </View>
+        </View>
+
+        <Ionicons
+          name="person-outline"
+          size={22}
+          color="white"
+          style={styles.icon}
+        />
       </View>
-      <Text style={styles.subtitle}>{title?.toLocaleUpperCase()}</Text>
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   safeArea: {
-    justifyContent: "center",
+    backgroundColor: colors.primary,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 12,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: colors.labelDetail,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    gap: 10,
+  },
+  left: {
+    flex: 1,
+    gap: 4,
+  },
+  ubi: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  titleUbi: {
+    color: "white",
+    fontSize: 13,
+    opacity: 0.9,
   },
   title: {
+    color: "white",
     fontSize: 20,
     fontFamily: "NunitoSemiBold",
   },
   subtitle: {
+    color: "white",
     fontSize: 14,
-    fontFamily: "NunitoSemiBold",
+    fontFamily: "NunitoRegular",
+    opacity: 0.9,
   },
-  image: {
-    borderColor: colors.primary,
+  icon: {
     borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+    borderRadius: 15,
+    borderColor: "white",
+    padding: 10,
   },
 });
 export default CustomHeader;

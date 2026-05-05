@@ -1,10 +1,11 @@
+import { Profile } from "@/src/pages/Profile";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
-export default function Profile() {
+export default function ProfileTab() {
   return (
-    <View>
-      <Text>Profile</Text>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <Profile />
     </View>
   );
 }

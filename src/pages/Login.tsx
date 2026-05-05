@@ -1,4 +1,5 @@
 import {
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -12,12 +13,14 @@ export const Login = () => {
   const { login } = useAuth();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Listo para entrenar</Text>
-      <Text style={styles.subtitle}>Login</Text>
+      <Image
+        source={require("../../assets/images/gymLogo.png")}
+        style={styles.logo}
+      />
       <View style={styles.containerForm}>
+        <Text style={styles.name}>Login</Text>
+        <View style={styles.detail} />
         <View style={styles.form}>
-          <Text style={styles.name}>INDARRA</Text>
-          <View style={styles.detail} />
           <Text style={styles.label}>Dni</Text>
           <TextInput placeholder="DNI" style={styles.input} />
           <Text style={styles.label}>Contraseña</Text>
@@ -48,37 +51,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.primary,
   },
-  title: {
-    marginTop: 80,
-    fontSize: 30,
-    fontFamily: "NunitoRegular",
-  },
+
   subtitle: {
     marginTop: 5,
     fontSize: 20,
     fontFamily: "NunitoSemiBold",
-    marginBottom: 80,
+    color: "white",
   },
   name: {
     textAlign: "center",
-    marginTop: 5,
-    fontSize: 20,
+    marginTop: 50,
+    fontSize: 30,
     fontFamily: "NunitoBold",
   },
   containerForm: {
     flex: 1,
-    backgroundColor: colors.hover,
+    backgroundColor: "white",
     width: "100%",
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
+    borderTopRightRadius: 80,
+
     elevation: 5,
   },
   detail: {
     backgroundColor: colors.primary,
     width: "100%",
     height: 1,
+    marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -90,16 +90,16 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   label: {
-    fontSize: 16,
-    fontFamily: "NunitoSemiBold",
+    fontFamily: "NunitoBold",
   },
   input: {
     borderRadius: 10,
-    backgroundColor: colors.background,
+    backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 15,
     marginVertical: 5,
     elevation: 5,
+    shadowColor: "#1A2D42",
   },
   containerButton: {
     justifyContent: "center",
@@ -116,7 +116,13 @@ const styles = StyleSheet.create({
   titleButton: {
     textAlign: "center",
     fontSize: 16,
-    color: colors.labelDetail,
+    color: "white",
     fontFamily: "NunitoBold",
+  },
+  logo: {
+    marginTop: 80,
+    width: 150,
+    height: 150,
+    marginBottom: 80,
   },
 });

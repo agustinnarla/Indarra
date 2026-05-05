@@ -5,7 +5,7 @@ import Card from "../components/ux/Card";
 export const Home = () => {
   return (
     <View>
-      <Card day="Dia 1" detail="Full-Body" id="1" />
+      <Card day="Dia 1" detail="Full-Body" />
     </View>
   );
 };
