@@ -1,4 +1,5 @@
 import { colors } from "@/src/themes/colors";
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface Props {
@@ -6,9 +7,13 @@ interface Props {
   detail: string;
 }
 const Card = ({ day, detail }: Props) => {
+  const [isPressed, setIsPressed] = useState(false);
   return (
     <View style={styles.container}>
-      <Pressable style={styles.card}>
+      <Pressable
+        style={[styles.card, isPressed && styles.isPressed]}
+        onPress={() => setIsPressed(!isPressed)}
+      >
         <View style={styles.cardDay}>
           <Text style={styles.day}>{day.toLocaleUpperCase()}</Text>
         </View>
@@ -27,7 +32,6 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "80%",
-
     borderRadius: 10,
     backgroundColor: "white",
     borderColor: colors.primary,
@@ -54,6 +58,10 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     width: "30%",
+  },
+  isPressed: {
+    transform: [{ scale: 0.9 }],
+    elevation: 5,
   },
 });
 export default Card;

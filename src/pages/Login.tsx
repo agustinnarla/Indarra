@@ -8,13 +8,16 @@ import {
 } from "react-native";
 import { useAuth } from "../hooks/useAuth";
 import { colors } from "../themes/colors";
+import { useState } from "react";
 
 export const Login = () => {
   const { login } = useAuth();
+  const [dni, setDni] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/gymLogo.png")}
+        source={require("../../assets/images/gymlogo.png")}
         style={styles.logo}
       />
       <View style={styles.containerForm}>
@@ -22,12 +25,19 @@ export const Login = () => {
         <View style={styles.detail} />
         <View style={styles.form}>
           <Text style={styles.label}>Dni</Text>
-          <TextInput placeholder="DNI" style={styles.input} />
+          <TextInput
+            placeholder="DNI"
+            style={styles.input}
+            value={dni}
+            onChangeText={setDni}
+          />
           <Text style={styles.label}>Contraseña</Text>
           <TextInput
             placeholder="***********"
             style={styles.input}
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
           <View />
         </View>
@@ -35,7 +45,7 @@ export const Login = () => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.7}
-            onPress={login}
+            onPress={() => login(dni, password)}
           >
             <Text style={styles.titleButton}>Ingresar</Text>
           </TouchableOpacity>

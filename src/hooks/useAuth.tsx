@@ -1,11 +1,12 @@
-import { useRouter } from "expo-router";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export const useAuth = () => {
-  const router = useRouter();
+  const context = useContext(AuthContext);
 
-  const login = async () => {
-    router.replace("/(tabs)");
-  };
+  if (!context) {
+    throw new Error("useAuth debe usarse dentro de un AuthProvider");
+  }
 
-  return { login };
+  return context; // Devuelve { isAuthenticated, login, logout }
 };
