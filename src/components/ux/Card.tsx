@@ -15,7 +15,7 @@ const Card = ({ day, detail }: Props) => {
         onPress={() => setIsPressed(!isPressed)}
       >
         <View style={styles.cardDay}>
-          <Text style={styles.day}>{day.toLocaleUpperCase()}</Text>
+          <Text style={styles.day}>Día {day.toLocaleUpperCase()}</Text>
         </View>
 
         <Text style={styles.detail}>{detail.toLocaleUpperCase()}</Text>

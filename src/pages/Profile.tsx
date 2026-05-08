@@ -1,9 +1,9 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../themes/colors";
-
+import { User } from "../data/data";
 export const Profile = () => {
   return (
     <View style={styles.screen}>
@@ -16,7 +16,6 @@ export const Profile = () => {
           <Text style={styles.member}>Socio activo</Text>
         </View>
       </SafeAreaView>
-
       <View style={styles.body}>
         <View style={styles.card}>
           <View style={styles.itemRow}>
