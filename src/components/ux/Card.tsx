@@ -1,18 +1,25 @@
 import { colors } from "@/src/themes/colors";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface Props {
   day: string;
   detail: string;
+  idPlan: number;
 }
-const Card = ({ day, detail }: Props) => {
+const Card = ({ day, detail, idPlan }: Props) => {
   const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => {
+    router.replace(`/(page)/rutina?idPlan=${idPlan}`);
+  };
+
   return (
     <View style={styles.container}>
       <Pressable
         style={[styles.card, isPressed && styles.isPressed]}
-        onPress={() => setIsPressed(!isPressed)}
+        onPress={handlePress}
       >
         <View style={styles.cardDay}>
           <Text style={styles.day}>Día {day.toLocaleUpperCase()}</Text>

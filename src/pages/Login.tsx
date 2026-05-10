@@ -11,6 +11,9 @@ import { colors } from "../themes/colors";
 import { useState } from "react";
 
 export const Login = () => {
+  const [isFocus, setFocus] = useState(false);
+  const [isFocusPassword, setFocusPassword] = useState(false);
+
   const { login } = useAuth();
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
@@ -24,20 +27,28 @@ export const Login = () => {
         <Text style={styles.name}>Login</Text>
         <View style={styles.detail} />
         <View style={styles.form}>
-          <Text style={styles.label}>Dni</Text>
+          <Text style={[styles.label, isFocus && styles.focusedLabel]}>
+            Dni
+          </Text>
           <TextInput
             placeholder="DNI"
-            style={styles.input}
+            style={[styles.input, isFocus && styles.focused]}
             value={dni}
             onChangeText={setDni}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
           />
-          <Text style={styles.label}>Contraseña</Text>
+          <Text style={[styles.label, isFocusPassword && styles.focusedLabel]}>
+            Contraseña
+          </Text>
           <TextInput
             placeholder="***********"
-            style={styles.input}
+            style={[styles.input, isFocusPassword && styles.focused]}
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            onFocus={() => setFocusPassword(true)}
+            onBlur={() => setFocusPassword(false)}
           />
           <View />
         </View>
@@ -134,5 +145,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginBottom: 80,
+  },
+  focused: {
+    transform: [{ scale: 1.05 }],
+    borderColor: colors.primary,
+    borderWidth: 1,
+  },
+  focusedLabel: {
+    color: colors.primary,
   },
 });

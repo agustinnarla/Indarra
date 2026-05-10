@@ -5,26 +5,39 @@ import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Props {
+  ubication?: string;
+  user?: boolean;
+  backButton?: () => void;
   title?: string;
-  subtitle?: string;
 }
-const CustomHeader = ({ title, subtitle }: Props) => {
+const CustomHeader = ({ user, ubication, backButton, title }: Props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
+        {backButton && (
+          <Ionicons
+            name="arrow-back"
+            size={24}
+            color="white"
+            onPress={backButton}
+            style={styles.backButton}
+          />
+        )}
         <View style={styles.left}>
           <View style={styles.ubi}>
-            <EvilIcons name="location" size={20} color="white" />
-            <Text style={styles.titleUbi}>Bucor Nv. Cordoba</Text>
+            {ubication && <EvilIcons name="location" size={20} color="white" />}
+            {ubication && <Text style={styles.titleUbi}>{ubication}</Text>}
           </View>
         </View>
-
-        <Ionicons
-          name="person-outline"
-          size={22}
-          color="white"
-          style={styles.icon}
-        />
+        {user && (
+          <Ionicons
+            name="person-outline"
+            size={22}
+            color="white"
+            style={styles.icon}
+          />
+        )}
+        {title && <Text style={styles.title}>{title}</Text>}
       </View>
     </SafeAreaView>
   );
@@ -73,6 +86,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "white",
     padding: 10,
+  },
+  backButton: {
+    position: "absolute",
+    left: 16,
   },
 });
 export default CustomHeader;

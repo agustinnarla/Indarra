@@ -5,8 +5,6 @@ import { useAuth } from "../hooks/useAuth";
 import { useHome } from "../hooks/useHome";
 
 export const Home = () => {
-  const { user } = useAuth();
-
   const { loading, error, plan } = useHome();
   return (
     <View>
@@ -15,7 +13,7 @@ export const Home = () => {
       ) : (
         plan?.map((item) => (
           <View key={item.id}>
-            <Card day={item.dia} detail={item.detalle} />
+            <Card day={item.dia} detail={item.detalle} idPlan={item.id} />
           </View>
         ))
       )}
