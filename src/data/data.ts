@@ -3,6 +3,7 @@ interface User {
   dni: string;
   usuario: string;
   email: string;
+  telefono: string;
 }
 
 export type { User };

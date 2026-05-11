@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
+import Toast from "react-native-toast-message";
 
 interface Ejercicio {
   id_plan: number;
@@ -46,9 +47,43 @@ export const useRutina = () => {
     }
   };
 
+  const updateEjercicio = async (
+    id_plan: number,
+    id_ejercicio: number,
+    peso: string,
+  ) => {
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API}/api/v1/update/exercise/${id_ejercicio}/${id_plan}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ peso }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al actualizar ejercicio");
+      }
+      Toast.show({
+        type: "success",
+        text1: "Actualización exitosa",
+      });
+      await getRutina();
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error al actualizar ejercicio",
+      });
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getRutina();
   }, [idPlan]);
 
-  return { loading, error, rutina, getRutina };
+  return { loading, error, rutina, getRutina, updateEjercicio };
 };

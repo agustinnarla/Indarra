@@ -4,7 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../themes/colors";
 import { User } from "../data/data";
+import { useAuth } from "../hooks/useAuth";
 export const Profile = () => {
+  const { user } = useAuth();
   return (
     <View style={styles.screen}>
       <SafeAreaView style={styles.safeArea}>
@@ -12,7 +14,7 @@ export const Profile = () => {
           <View style={styles.containerIcon}>
             <Ionicons name="person-outline" size={28} color="white" />
           </View>
-          <Text style={styles.name}>Agustin Arla</Text>
+          <Text style={styles.name}>{user?.usuario.toLocaleUpperCase()}</Text>
           <Text style={styles.member}>Socio activo</Text>
         </View>
       </SafeAreaView>
@@ -20,12 +22,12 @@ export const Profile = () => {
         <View style={styles.card}>
           <View style={styles.itemRow}>
             <Text style={styles.label}>Email</Text>
-            <Text style={styles.value}>arlaagustin1@gmail.com</Text>
+            <Text style={styles.value}>{user?.email}</Text>
           </View>
           <Divider />
           <View style={styles.itemRow}>
             <Text style={styles.label}>Telefono</Text>
-            <Text style={styles.value}>3518006018</Text>
+            <Text style={styles.value}>{user?.telefono}</Text>
           </View>
           <Divider />
           <View style={styles.itemRow}>

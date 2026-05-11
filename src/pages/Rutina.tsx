@@ -5,14 +5,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  FlatList,
   ActivityIndicator,
   TextInput,
+  ScrollView,
 } from "react-native";
 import CustomHeader from "../components/ux/CustomHeader";
 import { useRutina } from "../hooks/useRutina";
 import { colors } from "../themes/colors";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 interface Ejercicio {
   id_plan: number;
@@ -29,9 +30,13 @@ export const Rutina = () => {
   const { idPlan } = useLocalSearchParams<{ idPlan: string }>();
   const [isSelected, setIsSelected] = useState<Ejercicio | null>(null);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const { loading, error, rutina, updateEjercicio } = useRutina();
+
+  const [peso, setPeso] = useState<string>("");
 
   const handlePress = useCallback((ejercicio: Ejercicio) => {
     setIsSelected(ejercicio);
+    setPeso(ejercicio.peso);
     bottomSheetRef.current?.present();
   }, []);
 
@@ -39,10 +44,15 @@ export const Rutina = () => {
     router.replace("/(tabs)");
   };
 
-  const { loading, error, rutina } = useRutina();
+  const handleUpdate = async () => {
+    if (isSelected) {
+      await updateEjercicio(Number(idPlan), isSelected.id_ejercicio, peso);
+      bottomSheetRef.current?.dismiss();
+    }
+  };
 
   return (
-    <View>
+    <View style={styles.screen}>
       <CustomHeader backButton={handleBack} title={`Rutina ${idPlan}`} />
       {loading && (
         <View style={styles.centered}>
@@ -55,108 +65,200 @@ export const Rutina = () => {
           <Text style={styles.errorText}>{error}</Text>
         </View>
       )}
-      <View>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.listWrapper}
+        showsVerticalScrollIndicator={false}
+      >
         {rutina &&
-          Object.entries(rutina.ejercicios).map(([tipo, ejercicios]) => {
-            return (
-              <View key={tipo} style={styles.container}>
-                <Text style={styles.title}>{tipo.toLocaleUpperCase()}</Text>
-                <FlatList
-                  data={ejercicios}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      style={styles.items}
-                      activeOpacity={0.7}
-                      onPress={() => handlePress(ejercicios[0])}
-                    >
-                      <Text style={styles.labelPrimary}>
+          Object.entries(rutina.ejercicios).map(([tipo, ejercicios]) => (
+            <View key={tipo} style={styles.container}>
+              <Text style={styles.title}>{tipo.toLocaleUpperCase()}</Text>
+              {ejercicios.map((item) => (
+                <TouchableOpacity
+                  key={String(item.id_ejercicio)}
+                  style={styles.card}
+                  activeOpacity={0.7}
+                  onPress={() => handlePress(item)}
+                >
+                  <View style={styles.cardLeft}>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.labelPrimary} numberOfLines={1}>
                         {item.detalle.toLocaleUpperCase()}
                       </Text>
-                      <View style={{ flexDirection: "row", gap: 20 }}>
-                        <Text style={styles.label}>Series: {item.series}</Text>
-                        <Text style={styles.label}>Reps: {item.rep}</Text>
-                        <Text style={styles.label}>Peso: {item.peso}</Text>
+                      <View style={styles.badgeRow}>
+                        <View style={styles.badge}>
+                          <Text style={styles.badgeText}>
+                            {item.series} series
+                          </Text>
+                        </View>
+                        <View style={styles.badge}>
+                          <Text style={styles.badgeText}>{item.rep} reps</Text>
+                        </View>
+                        <View style={[styles.badge, styles.badgePeso]}>
+                          <Text
+                            style={[styles.badgeText, styles.badgePesoText]}
+                          >
+                            {item.peso} kg
+                          </Text>
+                        </View>
                       </View>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            );
-          })}
-        <BottomSheetModal
-          ref={bottomSheetRef}
-          enableDynamicSizing
-          backgroundStyle={styles.sheetBackground}
-        >
-          <BottomSheetView style={styles.sheetContent}>
-            <Text style={styles.sheetTitle}>
-              {isSelected?.detalle.toLocaleUpperCase()}
-            </Text>
+                    </View>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={20}
+                    color={colors.hover}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+      </ScrollView>
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        enableDynamicSizing
+        backgroundStyle={styles.sheetBackground}
+        handleIndicatorStyle={{
+          backgroundColor: colors.primary,
+        }}
+      >
+        <BottomSheetView style={styles.sheetContent}>
+          <Text style={styles.sheetTitle}>
+            {isSelected?.detalle.toLocaleUpperCase()}
+          </Text>
 
-            <View style={styles.statsRow}>
-              <View style={styles.statBox}>
-                <Text style={styles.statNumber}>{isSelected?.series}</Text>
-                <Text style={styles.statLabel}>Series</Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.statBox}>
-                <Text style={styles.statNumber}>{isSelected?.rep}</Text>
-                <Text style={styles.statLabel}>Reps</Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.statBox}>
-                <TextInput
-                  style={styles.statNumber}
-                  placeholder="0"
-                  maxLength={4}
-                />
-              </View>
+          <View style={styles.statsRow}>
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>{isSelected?.series}</Text>
+              <Text style={styles.statLabel}>Series</Text>
             </View>
-            <View style={styles.containerButton}>
-              <TouchableOpacity
-                style={styles.updateButton}
-                activeOpacity={0.7}
-                onPress={() => bottomSheetRef.current?.dismiss()}
-              >
-                <Text style={styles.updateButtonText}>Actualizar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.closeButton}
-                activeOpacity={0.7}
-                onPress={() => bottomSheetRef.current?.dismiss()}
-              >
-                <Text style={styles.closeButtonText}>Cerrar</Text>
-              </TouchableOpacity>
+            <View style={styles.statDivider} />
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>{isSelected?.rep}</Text>
+              <Text style={styles.statLabel}>Reps</Text>
             </View>
-          </BottomSheetView>
-        </BottomSheetModal>
-      </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statBox}>
+              <TextInput
+                style={styles.statNumber}
+                value={peso}
+                onChangeText={setPeso}
+                maxLength={4}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.containerButton}>
+            <TouchableOpacity
+              style={styles.updateButton}
+              activeOpacity={0.7}
+              onPress={() => handleUpdate()}
+            >
+              <Text style={styles.updateButtonText}>Actualizar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.closeButton}
+              activeOpacity={0.7}
+              onPress={() => bottomSheetRef.current?.dismiss()}
+            >
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </BottomSheetView>
+      </BottomSheetModal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#F2F4F6",
+  },
+  scroll: {
+    flex: 1,
+  },
+  listWrapper: {
+    padding: 16,
+    gap: 8,
+    paddingBottom: 40,
+  },
   container: {
-    gap: 10,
-    padding: 10,
+    gap: 8,
+    marginBottom: 8,
   },
   title: {
     fontFamily: "NunitoBold",
+    fontSize: 11,
+    color: colors.hover,
+    letterSpacing: 1.2,
+    marginBottom: 2,
+    marginLeft: 4,
   },
-  items: {
+  // Card
+  card: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    gap: 10,
-    borderBottomWidth: 1,
-    padding: 5,
-    borderBottomColor: colors.primary,
+    justifyContent: "space-between",
+    backgroundColor: "white",
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    elevation: 2,
+    shadowColor: "#1A2D42",
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  cardLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 12,
+  },
+  iconBox: {
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cardInfo: {
+    flex: 1,
+    gap: 5,
   },
   labelPrimary: {
     fontFamily: "NunitoBold",
+    fontSize: 13,
+    color: colors.primary,
+  },
+  badgeRow: {
+    flexDirection: "row",
+    gap: 6,
+    flexWrap: "wrap",
+  },
+  badge: {
+    backgroundColor: colors.labelDetail,
+    borderRadius: 6,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+  },
+  badgePeso: {
+    backgroundColor: colors.secondary,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontFamily: "NunitoSemiBold",
+    color: colors.secondary,
+  },
+  badgePesoText: {
+    color: "white",
   },
   label: {
     fontFamily: "NunitoRegular",
+    textAlign: "center",
   },
   errorText: {
     color: "red",
@@ -167,7 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  sheetBackground: { backgroundColor: "white", borderRadius: 28 },
+  sheetBackground: { backgroundColor: colors.hover, borderRadius: 28 },
 
   sheetContent: {
     paddingHorizontal: 24,
@@ -180,13 +282,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     textAlign: "center",
   },
-  sheetSubtitle: {
-    fontSize: 14,
-    fontFamily: "NunitoRegular",
-    color: colors.hover,
-    textAlign: "center",
-    marginTop: -12,
-  },
+
   statsRow: {
     flexDirection: "row",
     justifyContent: "center",
@@ -234,6 +330,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 10,
   },
-  closeButtonText: { color: "black", fontSize: 16, fontFamily: "NunitoBold" },
-  updateButtonText: { color: "white", fontSize: 16, fontFamily: "NunitoBold" },
+
+  closeButtonText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "black",
+    fontFamily: "NunitoBold",
+  },
+  updateButtonText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "white",
+    fontFamily: "NunitoBold",
+  },
 });
