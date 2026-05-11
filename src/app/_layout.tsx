@@ -3,9 +3,10 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider } from "../provider/AuthProvider";
 import Toast from "react-native-toast-message";
-
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 // Evitar que se oculte automaticamente
 SplashScreen.preventAutoHideAsync();
 
@@ -29,16 +30,19 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <View style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(page)" options={{ headerShown: false }} />
-        </Stack>
-        <Toast position="top" />
-      </View>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(page)" options={{ headerShown: false }} />
+          </Stack>
+
+          <Toast position="top" />
+        </AuthProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

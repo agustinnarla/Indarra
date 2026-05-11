@@ -1,10 +1,24 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 
+interface Ejercicio {
+  id_plan: number;
+  id_ejercicio: number;
+  detalle: string;
+  id_tipo_ejercicio: number;
+  tipo_ejercicio: string;
+  series: string;
+  rep: string;
+  peso: string;
+}
+
 interface Rutina {
   message: string;
-  ejercicios: any[];
+  ejercicios: {
+    [key: string]: Ejercicio[];
+  };
 }
+
 export const useRutina = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);

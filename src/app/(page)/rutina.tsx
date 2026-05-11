@@ -8,17 +8,8 @@ import { Rutina } from "@/src/pages/Rutina";
 
 export default function LoginTab() {
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView
-        edges={["top"]}
-        style={{ backgroundColor: colors.primary }}
-      />
-
-      <View style={{ flex: 1 }}>
-        <Rutina />
-      </View>
-
-      <SafeAreaView edges={["bottom"]} style={{ backgroundColor: "white" }} />
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <Rutina />
     </View>
   );
 }
